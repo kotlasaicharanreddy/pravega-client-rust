@@ -1,0 +1,3 @@
+[tox]
+pyo3 = tox_pyo3.plugin
+

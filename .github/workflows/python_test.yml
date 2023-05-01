@@ -41,7 +41,7 @@ jobs:
         run: pip install 'maturin>=0.14,<0.15' virtualenv tox
       - name: upgrade tox
         run: pip install --upgrade tox-pyo3
-      - name: Test with tox
+      - name: Test with tox1
         run: tox -c python/tox.ini
       - name: Upload Pravega standalone logs
         uses: actions/upload-artifact@v2
