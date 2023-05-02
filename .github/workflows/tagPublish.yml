@@ -2,8 +2,6 @@ name: package and publish to pypi and npm
 
 on:
   push:
-    tags:
-      - '*'
 
 jobs:
   github-release:
