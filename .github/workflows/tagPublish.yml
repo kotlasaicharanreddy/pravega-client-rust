@@ -71,7 +71,7 @@ jobs:
           pip install -U twine
           python -m twine upload --skip-existing target/wheels/*
       - name: Upload to Github releases
-        working-directory: ./targetnodejs
+        working-directory: ./target
         # Use bash, even on Windows to make find available
         shell: bash
         # A release need to be created before upload
