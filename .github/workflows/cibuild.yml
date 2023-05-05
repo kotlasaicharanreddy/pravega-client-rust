@@ -6,9 +6,12 @@ on:
   push:
     branches:
       - master
+    tag:
+      - '*'
   pull_request:
     branches:
       - master
+      
 
 name: CIbuild
 
@@ -329,3 +332,15 @@ jobs:
           name: ${{ env.ASSET }}
           path: ${{ env.ASSET }}
           retention-days: 5
+        if: github.event_name != 'push.tag'  
+      - name: Upload to Github releases
+        if: github.event_name == 'push.tag'
+        working-directory: ${{ env.ASSET }} 
+        # Use bash, even on Windows to make find available
+        shell: bash
+        # A release need to be created before upload
+        run: gh release upload ${{ env.RELEASE_VERSION }} ${{ env.ASSET }}   --clobber
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+        
