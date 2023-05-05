@@ -2,6 +2,8 @@ name: package and publish to pypi and npm
 
 on:
   push:
+    tags:
+      - '*'
 
 jobs:
   github-release:
@@ -64,6 +66,16 @@ jobs:
         run: |
           pip install -U twine
           python -m twine upload --skip-existing target/wheels/*
+      - name: Upload to Github releases
+        working-directory: ./target
+        # Use bash, even on Windows to make find available
+        shell: bash
+        # A release need to be created before upload
+        run: gh release upload ${{ env.RELEASE_VERSION }} "$(find ./wheels -name *.whl)" --clobber
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+
 
   nodejs-npm:
     name: nodejs-npm
