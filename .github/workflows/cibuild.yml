@@ -327,12 +327,12 @@ jobs:
             echo "ASSET=$staging.tar.gz" >> $GITHUB_ENV
           fi
       - name: Upload pravegactl artifacts
+        if: github.event_name != 'push.tag'
         uses: actions/upload-artifact@v2
         with:
           name: ${{ env.ASSET }}
           path: ${{ env.ASSET }}
-          retention-days: 5
-        if: github.event_name != 'push.tag'  
+          retention-days: 5  
       - name: Upload to Github releases
         if: github.event_name == 'push.tag'
         working-directory: ${{ env.ASSET }} 
