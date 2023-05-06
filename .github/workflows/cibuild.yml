@@ -4,10 +4,11 @@ on:
   # Trigger the workflow on push or pull request,
   # but only for the master branch
   push:
-    branches:
-      - master
     tags:
       - '*'
+    branches:
+      - master
+    
   pull_request:
     branches:
       - master
@@ -327,14 +328,14 @@ jobs:
             echo "ASSET=$staging.tar.gz" >> $GITHUB_ENV
           fi
       - name: Upload pravegactl artifacts
-        if: github.event_name != 'push.tag'
+        if: github.event_name == 'push' && (contains(github.ref, '/heads/master')
         uses: actions/upload-artifact@v2
         with:
           name: ${{ env.ASSET }}
           path: ${{ env.ASSET }}
           retention-days: 5  
       - name: Upload to Github releases
-        if: github.event_name == 'push.tag'
+        if: github.event_name == 'push' && (contains(github.ref, 'refs/tags/')
         working-directory: ${{ env.ASSET }} 
         # Use bash, even on Windows to make find available
         shell: bash
