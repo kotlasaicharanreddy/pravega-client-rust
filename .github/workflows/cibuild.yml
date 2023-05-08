@@ -268,7 +268,10 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
-
+      - name: Set release version
+        # Set release version env in all three os, the commented command only works in linux and mac.
+        run: python3 -c "import os; tag = os.environ['GITHUB_REF'].split('/')[-1]; f = open(os.environ['GITHUB_ENV'], 'a'); f.write('RELEASE_VERSION='+tag); f.close();"
+        # run: echo "RELEASE_VERSION=${GITHUB_REF#refs/*/}" >> $GITHUB_ENV
       - name: Install packages (Ubuntu)
         if: matrix.os == 'ubuntu-20.04'
         run: |
@@ -328,7 +331,7 @@ jobs:
             echo "ASSET=$staging.tar.gz" >> $GITHUB_ENV
           fi
       - name: Upload pravegactl artifacts
-        if: github.event_name == 'push' && contains(github.ref, '/heads/master')
+        if: github.event_name == 'push'
         uses: actions/upload-artifact@v2
         with:
           name: ${{ env.ASSET }}
@@ -336,7 +339,7 @@ jobs:
           retention-days: 5  
       - name: Upload to Github releases
         if: github.event_name == 'push' && contains(github.ref, 'refs/tags/')
-        working-directory: ${{ env.ASSET }} 
+        #working-directory: ${{ env.ASSET }} 
         # Use bash, even on Windows to make find available
         shell: bash
         # A release need to be created before upload
