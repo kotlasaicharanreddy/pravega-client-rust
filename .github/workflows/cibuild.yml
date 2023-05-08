@@ -331,7 +331,6 @@ jobs:
             echo "ASSET=$staging.tar.gz" >> $GITHUB_ENV
           fi
       - name: Upload pravegactl artifacts
-        if: github.event_name == 'push'
         uses: actions/upload-artifact@v2
         with:
           name: ${{ env.ASSET }}
