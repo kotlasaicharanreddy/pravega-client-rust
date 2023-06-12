@@ -55,8 +55,10 @@ jobs:
       - run: rustup set default-host ${{ matrix.platform.rust-target }}
       - name: install maturin
         run: pip install 'maturin>=0.14,<0.15'
-      - name: PYthon without three
-        run: python -m pip debug --verbose
+      - name: Pip version
+        run: pip --version
+      - name: Upgrade pip
+        run: python -m pip install --upgrade pip
       - name: python with three
         run: python3 -m pip debug --verbose
       - name: build wheel
