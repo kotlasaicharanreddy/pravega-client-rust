@@ -8,6 +8,7 @@ on:
       - '*'
     branches:
       - master
+    
   pull_request:
     branches:
       - master
@@ -279,6 +280,7 @@ jobs:
             echo "ASSET=$staging.tar.gz" >> $GITHUB_ENV
           fi
       - name: Upload pravegactl artifacts
+        if : contains(github.ref, 'refs/heads/')
         uses: actions/upload-artifact@v2
         with:
           name: ${{ env.ASSET }}
